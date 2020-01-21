@@ -14,6 +14,8 @@ GAME RULES:
 
 var totalScore, roundScore, activePlayer, playingGame;
 
+var diceRolls;
+
 init();
 
 
@@ -24,18 +26,38 @@ document.querySelector('.btn-roll').addEventListener('click', function() {
 //pick a number randomly
 var dice = Math.floor(Math.random() * 6 + 1);
 
+
 //add it to ui
+
 diceDom = document.querySelector('.dice');
 diceDom.style.display = 'block';
 diceDom.src = 'dice-' + dice + '.png';
 
+
+
 //update round score unless it hits 1, switch players
-if(dice !== 1) {
+if (dice === 2 && diceRolls === 2 ) {
+//player loses
+totalScore[activePlayer]= 0;
+document.querySelector('#score-' + activePlayer).textContent = '0';
+
+roundScore = 0;
+    activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
+    document.getElementById('current-0').textContent = '0';
+    document.getElementById('current-1').textContent = '0';
+
+    document.querySelector('.player-0-panel').classList.toggle('active');
+    document.querySelector('.player-1-panel').classList.toggle('active');
+
+    document.querySelector('.dice').style.display = 'none';
+
+}
+else if(dice !== 1) {
 roundScore += dice;
 //add that to UI
 document.getElementById('current-' + activePlayer).textContent = roundScore; 
-
 }
+
 else{
     roundScore = 0;
     activePlayer === 0 ? activePlayer = 1 : activePlayer = 0;
@@ -47,6 +69,11 @@ else{
 
     document.querySelector('.dice').style.display = 'none';
 }
+//save dice to diceRolls here so that after the whole function is executed then it
+//saves it to the global variable. otherwise, dice=dicerolls the moment the function runs
+//and youll get the most recent value(i.e) dice and not the old value (i.e dicerolls)
+diceRolls = dice
+console.log(diceRolls);
 
  }
 
@@ -62,8 +89,9 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
         document.querySelector('#score-' + activePlayer).textContent = totalScore[activePlayer];
         
         //check if player has won
+        var scoreSet = document.getElementById("scoreSet").value;
         
-        if (totalScore[activePlayer] >= 20) {
+        if (totalScore[activePlayer] >= scoreSet) {
             document.querySelector('#name-' + activePlayer).textContent ='Winner!!';
             document.querySelector('.dice').style.display = 'none';
             document.querySelector('.player-' + activePlayer + '-panel').classList.add('winner');
@@ -84,6 +112,8 @@ document.querySelector('.btn-hold').addEventListener('click', function() {
             document.querySelector('.player-1-panel').classList.toggle('active');
         
             document.querySelector('.dice').style.display = 'none';
+            
+            
         
         }
         
@@ -113,6 +143,7 @@ function init() {
     document.querySelector('.player-0-panel').classList.remove('active');
     document.querySelector('.player-0-panel').classList.add('active');
     playingGame= true;
+    document.getElementById("scoreSet").textContent = '0';
 }
 
 
