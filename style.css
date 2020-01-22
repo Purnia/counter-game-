@@ -158,7 +158,7 @@ i {
 
 .dice {
     position: absolute;
-    left: 40%;
+    left: 50%;
     top: 178px;
     transform: translateX(-50%);
     height: 100px;
